@@ -1,4 +1,4 @@
-const C='yl-1794565445',PRE=["./", "index.html", "manifest.json", "icon-192.png", "icon-512.png", "icon-180.png"];
+const C='yl-1794592644',PRE=["./", "index.html", "manifest.json", "icon-192.png", "icon-512.png", "icon-180.png"];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>Promise.all(PRE.map(u=>c.add(u).catch(()=>{})))))});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!=C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{const r=e.request;if(r.method!='GET')return;

@@ -17514,6 +17514,16 @@ memMusic=function(){let ac;try{ac=new (window.AudioContext||window.webkitAudioCo
  sched();
  return{stop(){stopped=true;try{master.gain.cancelScheduledValues(ac.currentTime);master.gain.setValueAtTime(master.gain.value,ac.currentTime);master.gain.linearRampToValueAtTime(0,ac.currentTime+1.4);setTimeout(()=>ac.close(),1700)}catch(e){}}}};
 
+/* v13.47 開啟加速：套用地圖時，地板一次讀整張畫布，不再每一格都向顯示卡讀一次（原本上萬次，慢的電腦會「網頁無回應」） */
+let EFBULK=null;
+{const _a=gzApply;gzApply=function(){EFBULK=0;try{return _a.apply(this,arguments)}finally{EFBULK=null}}}
+{const _p=gzPaintCell;gzPaintCell=function(ci,t){if(EFBULK!==null&&!EFB.has(ci)){try{
+  if(!EFBULK)EFBULK=S.getContext('2d').getImageData(0,0,S.width,S.height);
+  const r=gzCellRect(ci),w=Math.max(0,Math.min(r[2],S.width-r[0])),h=Math.max(0,Math.min(r[3],S.height-r[1]));
+  if(w>0&&h>0&&w==r[2]&&h==r[3]){const id=new ImageData(w,h),src=EFBULK.data,dst=id.data,SW=S.width;
+   for(let y=0;y<h;y++){const o=((r[1]+y)*SW+r[0])*4;dst.set(src.subarray(o,o+w*4),y*w*4)}EFB.set(ci,id)}}catch(e){}}
+ return _p.apply(this,arguments)}}
+
 /* ===== v9：夜間燈光、輸入、主迴圈 ===== */
 function drawTree(c,t){if(window.uaTree&&uaTree(c,t))return;const w=wx(),sw=Math.sin(NOW/(w==3?260:1400)+t.x*.05)*(w==3?.16:.02)+(w==3?Math.sin(NOW/900)*.06:0);c.save();c.translate(t.x+14,t.y+37);c.transform(1,0,sw,1,0,0);c.scale(t.sc||1,t.sc||1);c.drawImage(treeSprite(t.k,t.v),-24,-60,48,66);c.restore()}
 const p={x:84,y:664,w:12,h:8,dir:0,fr:0,t:0,mv:false,vx:0,vy:0};
