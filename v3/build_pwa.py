@@ -14,10 +14,13 @@ head='''<link rel="manifest" href="manifest.json"><meta name="theme-color" conte
 <meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="宜樂無窮">
 <link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png">
+<script>window.APPV=%s;window.APPLOG=%s;</script><script>'''+open('/home/claude/v3/upd.js',encoding='utf8').read()+'''</script>
 <script>if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>
-<style>html,body{background:#070614;overscroll-behavior:none}@media (display-mode:standalone){body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}}</style>
+<style>html,body{background:#070614;overscroll-behavior:none;overflow:hidden;max-width:100vw}canvas{max-width:100vw}@media (display-mode:standalone){body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}}</style>
 '''
+LOG=json.load(open('/home/claude/v3/changelog.json',encoding='utf8'));head=head.replace('window.APPV=%s;window.APPLOG=%s;','window.APPV=%s;window.APPLOG=%s;'%(json.dumps(LOG[0]['v']),json.dumps(LOG,ensure_ascii=False)))
 h=h.replace('</head>',head+'</head>',1)
+json.dump({'v':LOG[0]['v'],'log':LOG},open(D+'/version.json','w',encoding='utf8'),ensure_ascii=False)
 # 3) 大檔案拆出去：首頁變很小，圖片和程式分開下載、各自快取（斷線重開不用從頭來）
 g0=h.index('<script id="GAMEJS" type="text/x-game">')+len('<script id="GAMEJS" type="text/x-game">');g1=h.index('</script>',g0)
 open(D+'/game.js','w',encoding='utf8').write(h[g0:g1]);h=h[:g0]+h[g1:]
@@ -55,7 +58,7 @@ json.dump({"name":"家有冠宏，宜樂無窮","short_name":"宜樂無窮","sta
 open(D+'/sw.js','w').write('''const C='yl-%s',PRE=%s;
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>Promise.all(PRE.map(u=>c.add(u).catch(()=>{})))))});
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!=C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('fetch',e=>{const r=e.request;if(r.method!='GET')return;
+self.addEventListener('fetch',e=>{const r=e.request;if(r.method!='GET'||r.url.includes('version.json'))return;
  if(r.mode=='navigate'){const net=fetch(r).then(res=>{if(res.ok){const cp=res.clone();caches.open(C).then(c=>c.put('index.html',cp))}return res});e.waitUntil(net.catch(()=>{}));e.respondWith(caches.match('index.html').then(m=>m||net));return}
  e.respondWith(caches.match(r).then(m=>m||fetch(r).then(res=>{if(res.ok||res.type=='opaque'){const cp=res.clone();caches.open(C).then(c=>c.put(r,cp))}return res})))});
 '''%(ver,json.dumps(files)))
