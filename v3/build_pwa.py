@@ -26,7 +26,7 @@ g0=h.index('<script id="GAMEJS" type="text/x-game">')+len('<script id="GAMEJS" t
 open(D+'/game.js','w',encoding='utf8').write(h[g0:g1]);h=h[:g0]+h[g1:]
 assert "s.textContent=document.getElementById('GAMEJS').textContent" in h
 h=h.replace("s.textContent=document.getElementById('GAMEJS').textContent","s.src='game.js'",1)
-a=h.index('<script src="pk/pk_index.js"></script><script>')+len('<script src="pk/pk_index.js"></script><script>');b=h.index('\nwindow.UAI={};',a)
+a=h.index('<script src="pk/npc_ua.js"></script><script>')+len('<script src="pk/npc_ua.js"></script><script>');b=h.index('\nwindow.UAI={};',a)
 ua=h[a:b];parts=[];cur='';import re as _r
 for chunk in _r.split(r'(?=Object\.assign\(UA,)',ua):
     if len(cur)+len(chunk)>3500000 and cur:parts.append(cur);cur=''
@@ -50,7 +50,7 @@ pre=''.join('<link rel="preload" as="script" href="ua/ua%d.js">'%i for i in rang
 h=h.replace('</head>',pre+'</head>',1)
 open(D+'/index.html','w',encoding='utf8').write(h)
 UAF=['ua/ua%d.js'%i for i in range(len(parts))]
-for f in glob.glob('/home/claude/v3/pk/d*.js')+['/home/claude/v3/pk/pk_index.js']:shutil.copy(f,D+'/pk/')
+for f in glob.glob('/home/claude/v3/pk/d*.js')+['/home/claude/v3/pk/pk_index.js','/home/claude/v3/pk/npc_ua.js']:shutil.copy(f,D+'/pk/')
 files=['./','index.html','manifest.json','icon-192.png','icon-512.png','icon-180.png']
 ver=str(int(os.path.getmtime('/home/claude/v3/out.html')))
 json.dump({"name":"家有冠宏，宜樂無窮","short_name":"宜樂無窮","start_url":"./","scope":"./","display":"fullscreen","orientation":"landscape","background_color":"#070614","theme_color":"#140c24",
