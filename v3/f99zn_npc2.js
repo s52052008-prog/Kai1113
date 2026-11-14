@@ -1,7 +1,10 @@
 /* v13.49 使用者新畫的 8 位角色：仰恩、笑笑、保羅、柏凱、以倫（新造型）、老八、張博洋、朱哲良
    素材只放 4 方向 × 4 格走路圖＋頭像；其餘（站、坐、動作列）在這裡自動組出來 */
 Object.assign(NSPR,{'仰恩':'ye','笑笑':'xx','保羅':'pl','廖柏凱':'bk','柏凱':'bk','黃以倫':'yl2','以倫牧師':'yl2','以倫':'yl2','老八':'l8','張博洋':'by','博洋':'by','朱哲良':'zl','哲良':'zl','小朱':'zl'});
-const NPCN2=['ye','xx','pl','bk','yl2','l8','by','zl'];
+const NPCN2=['ye','xx','pl','bk','yl2','l8','by','zl','w1','w2','w3','w4','w5','w6'];
+// v13.50 六位新路人女生：w1 金髮、w2 綠髮、w3 長馬尾、w4 老奶奶、w5 粉紅運動服、w6 耳罩少女
+GF.push('w1','w2','w3','w5','w6');
+NROLE.forEach(q=>{const t=String(q[1]);if(q[0]=='健身房'&&/健身客/.test(t))q[2]=q[2].concat(['w1','w3','w5']);else if(/阿嬤/.test(t))q[2]=['g14','w4'];else if(q[0]=='遊藝場'&&/少女/.test(t))q[2]=['g26','w6']});
 function npc2Sheet(code){const wk=code+'_walk4';if(!uaOK(wk))return;const im=UAI[wk],FW=64,FH=128,cv=document.createElement('canvas');cv.width=FW*6;cv.height=FH*10;const x=cv.getContext('2d');x.imageSmoothingEnabled=false;
  const cell=(r,c,dc,dr)=>x.drawImage(im,c*FW,r*FH,FW,FH,dc*FW,dr*FH,FW,FH);
  for(let r=0;r<4;r++){[0,1,2,3,0,1].forEach((c,i)=>cell(r,c,i,r));for(let i=0;i<6;i++)cell(r,1,i,r+4)}
