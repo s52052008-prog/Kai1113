@@ -3389,7 +3389,7 @@ function frTalk(n){const id=n.fr,F=FR[id],s=FRS(id);closeDlg&&0;
  o.push(['💬 聊聊天','依地點、時段與好感而變化：可友善／中性／冷淡回應',()=>{if(dlgEngine(n,{fr:id,extra:[['↩ 返回','',()=>frTalk(n)]]}))return;const first=s.td!=dk;s.td=dk;if(first){frAdd(id,2);fxApply({j:3});hud()}const t=F.lines[lv<2?0:lv<3?1:2];closeDlg();openDlg('💬 '+F.n+frHearts(id),pick0(t,dk*7+(NOW/9000|0)+s.pt)+(first?'':'<br><span class="opacity-60 text-xs">（今天已經聊過了，好感不再增加）</span>'),[['返回','',()=>frTalk(n)]],true)}]);
  o.push(['🎁 送禮','每人每天一次',()=>giftMenu(id,n),s.gd==dk]);
  F.acts.forEach(a=>{const done=s.ad[a.k]==dk,hr=a.hr&&(T.hour<a.hr[0]||T.hour>=a.hr[1]),cost=Math.max(0,a.m||0);
-  o.push([a.t,a.d+(done?'（今天已經約過）':hr?'（目前時段不適合）':''),()=>{if(a.custom=='guitar'){closeDlg();return churchGuitar()}if(a.custom=='nerf'){closeDlg();return nerfMenu('church')}s.ad[a.k]=dk;if(a.m>0)st.money-=a.m;else if(a.m<0)st.money-=a.m;advance(a.h||.5);fxApply(a.fx||{});if(a.sing)st.skill.sing=Math.min(100,st.skill.sing+a.sing);frAdd(id,a.pt);for(const k in a.others||{})frAdd(k,a.others[k]);hud();closeDlg();toast(a.msg)},done||hr||st.money<cost]);});
+  o.push([a.t,a.d+(done?'（今天已經約過）':hr?'（目前時段不適合）':''),()=>{if(a.custom=='guitar'){closeDlg();return churchGuitar()}if(a.custom=='nerf'){closeDlg();return nerfMenu('church')}if(a.custom=='bey'){closeDlg();s.ad[a.k]=dk;frAdd(id,a.pt);hud();toast(a.msg);return beyStart('free')}s.ad[a.k]=dk;if(a.m>0)st.money-=a.m;else if(a.m<0)st.money-=a.m;advance(a.h||.5);fxApply(a.fx||{});if(a.sing)st.skill.sing=Math.min(100,st.skill.sing+a.sing);frAdd(id,a.pt);for(const k in a.others||{})frAdd(k,a.others[k]);hud();closeDlg();toast(a.msg)},done||hr||st.money<cost]);});
  if(id=='yijia')yjOpts(o,n,s,dk);if(id=='yilun')ylOpts(o,n);
  o.push(['離開','',closeDlg]);
  openDlg('💬 '+F.n+frHearts(id)+(st.partner==F.n?' 💍':''),`${F.who}・${frLab(id,s.pt)}（好感 ${s.pt}/${id=='yijia'?200:100}）`,o)}
@@ -17523,6 +17523,179 @@ let EFBULK=null;
   if(w>0&&h>0&&w==r[2]&&h==r[3]){const id=new ImageData(w,h),src=EFBULK.data,dst=id.data,SW=S.width;
    for(let y=0;y<h;y++){const o=((r[1]+y)*SW+r[0])*4;dst.set(src.subarray(o,o+w*4),y*w*4)}EFB.set(ci,id)}}catch(e){}}
  return _p.apply(this,arguments)}}
+
+/* v13.48 新角色：張博洋（高雄市三民區市議員・教會的好朋友・招牌紅外套） */
+RL.push([/張博洋/,{fm:0,hs:'s',hr:'#1a1410',tp:'#c8282a',bt:'#2a2f3a',ou:'j',ac:'g',sk:'#efc9a4',sh:'#222'}]);
+FR.boyang={n:'張博洋',ic:'🧥',who:'高雄市三民區市議員・教會的好朋友',
+ intro:'「嗨！你就是老哥吧？我是博洋，在三民區當議員。舫慈以前當過我的志工，她說教會有個很會做家事的大哥，我就跟來看看啦！」<br><i>（他穿著整齊的深色西裝，胸口別著一枚紅色徽章，笑起來很有精神。）</i>',
+ bio:[[0,'高雄市三民區市議員，招牌是一件紅外套'],[0,'桃園出生、在屏東竹田長大的客家子弟'],[0,'跟舫慈感情很好，舫慈以前當過他的志工；跟以倫牧師也很熟'],
+  [1,'高應大（現在的高科大）模具工程系畢業，當過機械設計工程師、工地設計師'],[1,'也當過電台主持人，講話反應超快'],[1,'很關心行人路權和交通安全，常常到路口會勘'],
+  [2,'自己承認：「我其實是很容易半途而廢的人，唯獨服務大家這件事，一做就停不下來。」'],[2,'朋友選舉時，他會穿著紅外套跑去站台，而且是很拚命地幫忙，不是做做樣子'],[2,'個性直來直往，想到什麼就說，有時候也會被念']],
+ where:'平常在三民區跑行程；有時候星期天會跟舫慈一起來教會。',
+ likes:{drink:4,lunch:4,coffee:4,bread:3,popcorn:2},hint:'他行程很滿，常常一杯飲料、一個麵包就當一餐。',
+ lines:[
+  ['今天行程排到晚上十點，不過能來教會坐一下，心就安靜了。','今天穿西裝比較正式啦，我的招牌紅外套放在車上，跑行程才穿。選民一看到紅外套就知道我來了，哈哈！','舫慈以前當我志工的時候，發傳單比我還有效率。','老哥，你住的那邊路口安不安全？有問題可以跟我說。'],
+  ['我以前在工廠畫模具，朝九晚五的辦公室生活我真的待不住。','以前在電台主持節目，訓練出我講話很快……有時候太快了，被念過好幾次。','我是客家人，你想學客家話嗎？「承蒙你」就是謝謝你的意思。','安全島的轉角削切一點點，車子轉彎就看得到行人，很多事其實是細節。'],
+  ['我做什麼都很容易半途而廢，唯獨服務大家這件事，一路做到現在都沒放棄。','以倫哥跟我說：「做對的事，不一定馬上被看見，但上帝都知道。」我一直記得。','看到你跟家宜這樣互相扶持，我真的很羨慕，也很替你們開心。','有時候很累，但走在路上有阿伯跟我說「少年仔加油」，就又有力氣了。']],
+ acts:[
+  {k:'walk',t:'🚸 陪他去路口會勘',d:'1 小時・⚡-3・🧠+2・好感+6',m:0,h:1,fx:{w:2,s:-3,j:3},pt:6,hr:[8,18],msg:'你們站在路口看了好久的車流。博洋：「你看，轉角這裡削掉一點，轉彎的車就看得到行人了。」他認真地拍照、寫筆記。'},
+  {k:'radio',t:'🎙️ 聽他講電台主持的趣事',d:'0.5 小時・😊+6・好感+4',m:0,h:.5,fx:{j:6},pt:4,msg:'他學起以前主持節目的口氣：「各位聽眾朋友晚安～」你笑到不行。'},
+  {k:'hakka',t:'🀄 跟他學幾句客家話',d:'0.5 小時・🧠+1・好感+5',m:0,h:.5,fx:{w:1,j:4},pt:5,msg:'博洋：「承蒙你（sṳ̀n-mùng-ngì）！就是謝謝你。」你學了好幾次，他笑說你的腔調像在唱歌。'},
+  {k:'meal',t:'🍱 請他吃個便當',d:'💰200・1 小時・好感+7',m:200,h:1,fx:{j:6,r:2},pt:7,hr:[11,21],msg:'他三兩口就扒完便當：「歹勢，等一下還有行程！謝謝老哥請客！」跑出門前還回頭揮手。',others:{fangci:1}}]};
+
+// 教會：有時候星期天跟舫慈一起來；星期三小組偶爾也會出現
+{const _cc=churchCast;churchCast=function(rm){const r=_cc.apply(this,arguments);try{const h=T.hour,m=CHM(),wk=Math.floor(dKey()/7);
+ const B=(x,y,o)=>rm.ppl.push(pp('張博洋',x,y,'#c8282a','#222','平安！|今天終於有空來了。|舫慈拉我來的，哈哈！',{dyn:1,still:1,fr:'boyang',...o}));
+ if(h<7.5||h>=21)return r;
+ if(m=='sun'&&wk%2==0)B(76,58,{sit:1,dir:0,pose:'chat'});
+ else if(m=='wed'&&wk%3==0)B(466,306,{dir:0,pose:'chat'});}catch(e){}return r}}
+
+/* v13.49 使用者新畫的 8 位角色：仰恩、笑笑、保羅、柏凱、以倫（新造型）、老八、張博洋、朱哲良
+   素材只放 4 方向 × 4 格走路圖＋頭像；其餘（站、坐、動作列）在這裡自動組出來 */
+Object.assign(NSPR,{'仰恩':'ye','笑笑':'xx','保羅':'pl','廖柏凱':'bk','柏凱':'bk','黃以倫':'yl2','以倫牧師':'yl2','以倫':'yl2','老八':'l8','張博洋':'by','博洋':'by','朱哲良':'zl','哲良':'zl','小朱':'zl'});
+const NPCN2=['ye','xx','pl','bk','yl2','l8','by','zl','w1','w2','w3','w4','w5','w6','a1','a2','a3','a4','a5','f1','f2','f3','f4','f5','f6','f7','k1','k2','k3','k4','m1','m2','m3','m4','u1','u2','u3','u4','u5','y1','y2','y3','y4','b1','b2','b3','s1','s2','s3','j1','j2','j3','j4','j5','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18','q19','q20','r1','r2','r3'];
+// v13.50 六位新路人女生：w1 金髮、w2 綠髮、w3 長馬尾、w4 老奶奶、w5 粉紅運動服、w6 耳罩少女
+GF.push('w1','w2','w3','w5','w6','f1','f2','f4','f5','f6','f7');
+// v13.51 第二批 20 位路人：a 阿嬤、m 阿公、f 女生/阿姨、k 小女孩
+Object.assign(NSPR,{'王伯':'m4','茶行老闆娘':'f2','食堂阿桑':'a2','房東太太':'f5'});
+NROLE.splice(NROLE.findIndex(q=>q[2]=='M'),0,[null,/^會友$|^信眾$/,['a1','a3','f1','f2','f4','f5','f6','m1','m2','m3','m4','w4']],[null,/阿姨$|媽媽$|大嬸$/,['f1','f2','f3','a4']],[null,/妹妹$|小女孩$/,['k1','k2','k3','k4']]);
+NROLE.forEach(q=>{const t=String(q[1]);if(q[0]=='健身房'&&/健身客/.test(t))q[2]=q[2].concat(['w1','w3','w5']);else if(/阿嬤/.test(t))q[2]=['w4','a1','a2','a3','a5'];else if(/阿公/.test(t))q[2]=['m1','m2','m3','m4'];else if(/小朋友/.test(t))q[2]=['g01','k1','k3','k4','k2'];else if(/同學/.test(t))q[2]=q[2].concat(['f7','f6','k2']);else if(/張阿姨|清潔/.test(t))q[2]='f3';else if(q[0]=='遊藝場'&&/少女/.test(t))q[2]=['g26','w6']});
+function npc2Sheet(code){const wk=code+'_walk4';if(!uaOK(wk))return;const im=UAI[wk],FW=64,FH=128,cv=document.createElement('canvas');cv.width=FW*6;cv.height=FH*10;const x=cv.getContext('2d');x.imageSmoothingEnabled=false;
+ const cell=(r,c,dc,dr)=>x.drawImage(im,c*FW,r*FH,FW,FH,dc*FW,dr*FH,FW,FH);
+ for(let r=0;r<4;r++){[0,1,2,3,0,1].forEach((c,i)=>cell(r,c,i,r));for(let i=0;i<6;i++)cell(r,1,i,r+4)}
+ for(let i=0;i<6;i++)cell(0,1,i,9);
+ // 坐姿：上半身往下移、腿縮短
+ const sit=(r,dc)=>{const t=document.createElement('canvas');t.width=FW;t.height=FH;const q=t.getContext('2d',{willReadFrequently:true});q.drawImage(im,1*FW,r*FH,FW,FH,0,0,FW,FH);const d=q.getImageData(0,0,FW,FH).data;let top=FH,bt=0;for(let y=0;y<FH;y++)for(let xx=0;xx<FW;xx++)if(d[(y*FW+xx)*4+3]>0){top=Math.min(top,y);bt=Math.max(bt,y)}
+  const hip=Math.round(top+(bt-top)*.62),dd=Math.round((bt-hip)*.45);x.drawImage(t,0,0,FW,hip,dc*FW,8*FH+dd,FW,hip);x.drawImage(t,0,hip,FW,bt+1-hip,dc*FW,8*FH+hip+dd,FW,Math.max(1,bt+1-hip-dd))};
+ sit(0,0);sit(3,1);
+ cv.complete=true;cv.naturalWidth=cv.width;cv.naturalHeight=cv.height;UAI[code+'_sheet']=cv;NPOSE[code+'_sheet']={wave:[0],sing:[0],pray:[0],clap:[0],hug:[0],heart:[0],guitar:[0],lift:[0]}}
+function npc2All(){NPCN2.forEach(c=>{try{if(!UAI[c+'_sheet'])npc2Sheet(c)}catch(e){console.warn(e)}})}
+npc2All();setTimeout(npc2All,1500);setTimeout(npc2All,5000);
+
+// v13.52 第三批 20 位：u 大叔、y 年輕男生、b 小男孩、s 軍人、j 職業女性
+GM.push('u1','u2','u3','u4','u5','y1','y2','y3');GF.push('j2');
+Object.assign(NSPR,{'咖啡師':'j1','廚師':'j5','上班族':'u4','下班的上班族':'y3','營長':'s3','衛兵':'s1','阿兵哥':'s2','士兵':'s2'});
+NROLE.forEach(q=>{const t=String(q[1]);
+ if(/小朋友/.test(t))q[2]=q[2].concat(['b1','b2']);
+ else if(/同學/.test(t))q[2]=q[2].concat(['y4','b3']);
+ else if(/黑手學徒/.test(t))q[2]=['g19','j3'];
+ else if(/站務員/.test(t))q[2]=['g27','j4'];
+ else if(/領位員\|燒肉職人/.test(t))q[2]=['g16','j5'];});
+NROLE.splice(NROLE.findIndex(q=>q[2]=='M'),0,[null,/^旅客$/,GM.concat(GF,['s2','s2','s3','s1'])],[null,/^少年$/,['y1','y2','y3','y4','b3','g11','g24']],[null,/叔叔$|大叔$|伯伯$/,['u1','u2','u3','u4','u5']]);
+
+// v13.53 第四批 20 位：職業制服
+GM.push('q7','q11','q13','q15','q20');GF.push('q1','q2');
+Object.assign(NSPR,{'農夫伯':'q19','釣客 老林':'q12','釣客':'q12','老闆 阿財':'q18','教練 阿凱':'q6','郵差':'q20','外送員':'q15','保全':'q8','警衛':'q8','麵包師傅':'q13','園丁':'q11','水電工':'q7','機長':'q9','咖啡師':'q16'});GF.push('j1');GM.push('q10','q16');
+NROLE.forEach(q=>{if(q[0]=='碳佐麻里'&&/領位員/.test(String(q[1])))q[2]=['g16','j5','q10']});
+{const _r=nsRole;nsRole=function(nm,ob){if(ob&&ob._sp!==undefined)return ob._sp;const sc=typeof scene!='undefined'?scene:null;
+ if(sc=='餐廳'&&nm=='老闆'){if(ob)ob._sp='q10';return 'q10'}return _r.apply(this,arguments)}}
+NROLE.forEach(q=>{const t=String(q[1]);
+ if(q[0]=='診所'&&/醫生/.test(t))q[2]='q5';
+ else if(/警員/.test(t))q[2]=['g03','q3'];
+ else if(/消防員/.test(t))q[2]=['g04','q4'];
+ else if(q[0]=='健身房'&&/教練/.test(t))q[2]=['g10','q6'];
+ else if(q[0]=='書局'&&/店員/.test(t))q[2]=['g31','q2','q14'];
+ else if(q[0]=='銀行'&&/櫃員/.test(t))q[2]=['g17','q17'];
+ else if(q[0]=='銀行'&&/理專/.test(t))q[2]=['g18','q17'];
+ else if(/黑手學徒/.test(t))q[2]=q[2].concat(['q7']);
+ else if(/^\/\^旅客\$\//.test(t))q[2]=q[2].concat(['q9','q9']);
+ else if(/上班族/.test(t))q[2]=['u4','q17'];});
+NROLE.splice(NROLE.findIndex(q=>q[2]=='M'),0,[null,/釣客/,['q12']],[null,/郵差/,['q1','q20']],[null,/外送/,['q15']]);
+
+// v13.54 男醫生、男警察、男主廚
+delete NSPR['廚師'];GM.push('r2');
+NROLE.forEach(q=>{const t=String(q[1]);
+ if(q[0]=='診所'&&/醫生/.test(t))q[2]=['q5','r1'];
+ else if(/警員/.test(t))q[2]=['r2','q3','g03'];});
+NROLE.splice(NROLE.findIndex(q=>q[2]=='M'),0,[null,/廚師|主廚/,['r3','j5']]);
+
+/* v13.55 三位教會弟兄：大B哥（電吉他）、轟哥（bass・愛零食）、張登強（國軍弟兄・教會報告） */
+Object.assign(NSPR,{'大B哥':'db','轟哥':'hg','張登強':'dq','登強':'dq'});
+NPCN2.push('db','hg','dq');npc2All();setTimeout(npc2All,1500);
+
+FR.bigb={n:'大B哥',ic:'🎸',who:'教會敬拜團・電吉他',
+ intro:'「喔～老哥！你也來啦！」<br><i>（大B哥高高壯壯的，像一隻熊，手上還轉著一顆陀螺。）</i>',
+ bio:[[0,'教會敬拜團的電吉他手'],[0,'個子高高、壯壯的，像一隻熊'],[0,'跟主揚哥是音樂同好，一起負責敬拜團'],
+  [1,'常常在教會出沒'],[1,'也很喜歡打戰鬥陀螺']],
+ where:'常常在教會；主日上台彈電吉他，星期六下午敬拜團練團。',
+ likes:{drink:4,lunch:4,coffee:3,bread:3,popcorn:3},hint:'他食量很大，請他吃便當準沒錯。',
+ lines:[['老哥！來一場吧！我的陀螺已經餓了！','3、2、1——Go Shoot！！','這一顆……是我用靈魂組出來的。'],
+  ['你感受到了嗎？這顆陀螺的轉速……已經超越人類的極限了！','不要小看熊的力量，老哥！','我的刀鋒，只為勝利而轉！'],
+  ['老哥……你是我唯一承認的對手。','陀螺停下來之前，戰鬥就沒有結束！','今天就讓你見識一下，傳說中的——怒掏巨莖！！']],
+ acts:[{k:'gtr',t:'🎸 聽他彈一段電吉他',d:'免費・0.5 小時・😊+6・好感+4',m:0,h:.5,fx:{j:6},pt:4,msg:'大B哥插上音箱刷了一段和弦，整個教會都震了一下。'},
+  {k:'bey',t:'🌀 跟他對戰戰鬥陀螺',d:'免費・好感+5',m:0,h:.3,pt:5,custom:'bey',msg:'大B哥：「老哥，覺悟吧！傳說中的——怒掏巨莖！！」'},
+  {k:'meal',t:'🍱 請他吃大份便當',d:'💰150・1 小時・好感+7',m:150,h:1,fx:{j:6},pt:7,hr:[11,20],msg:'他三兩下就吃光，滿足地拍拍肚子：「老哥讚啦！」'}]};
+
+FR.hong={n:'轟哥',ic:'🎶',who:'教會敬拜團・Bass 手・零食之王',
+ intro:'「老哥！要不要來一包？」<br><i>（轟哥手上拿著一包餅乾，口袋裡還插著一顆陀螺。）</i>',
+ bio:[[0,'教會敬拜團的 bass 手，跟主揚哥、大B哥同一團'],[0,'最愛吃零食：中午吃完飯，總要再來兩包餅乾跟一支冰棒'],
+  [1,'很喜歡打戰鬥陀螺']],
+ where:'主日在敬拜團彈 bass；午餐後在廚房附近吃零食；星期六下午練團。',
+ likes:{popcorn:5,cake:4,drink:4,bread:3,lunch:2},hint:'零食、冰棒、甜點，給什麼他都開心。',
+ lines:[['（喀滋喀滋）老哥，吃飽了才有力氣 Shoot！','兩包餅乾、3塊巧克力🍫——這是我的能量補充儀式。','老哥，今天要被我轟飛了喔！'],
+  ['低音的震動……就是我陀螺的力量來源！','這一擊，名為——轟・天・崩・地！！','你聽到了嗎？是勝利的 bass line！'],
+  ['老哥，你的陀螺很強……但還不夠「重」。','零食吃完的那一刻，就是我認真的時候！','轟斯特來囉～！看我的騎士圓甲！']],
+ acts:[{k:'snack',t:'🍪 請他吃餅乾＋冰棒',d:'💰50・0.3 小時・好感+6',m:50,h:.3,fx:{j:4},pt:6,msg:'轟哥眼睛一亮：「老哥懂我！能量充滿了！」'},
+  {k:'bey',t:'🌀 跟他對戰戰鬥陀螺',d:'免費・好感+5',m:0,h:.3,pt:5,custom:'bey',msg:'轟哥：「轟斯特來囉～！看我的騎士圓甲！」'},
+  {k:'bass',t:'🎵 聽他彈一段 bass',d:'免費・0.5 小時・😊+4・好感+4',m:0,h:.5,fx:{j:4},pt:4,msg:'轟哥彈了一段很穩的 bass line，咚——咚咚，整首歌的骨架就出來了。'}]};
+
+FR.dengqiang={n:'張登強',ic:'🎖️',who:'國軍士官・教會報告擔當',
+ intro:'「老哥！平安！」<br><i>（張登強笑起來很有精神，講話很逗，一看就是會讓大家笑的人。）</i>',
+ bio:[[0,'國軍士官，年紀比你稍微大一點'],[0,'主日教會報告常常由他負責'],[0,'太太是詠晨，兩個人感情很好'],
+  [1,'很愛主，也很喜歡打戰鬥陀螺'],[1,'為人風趣幽默，常常跟大家一起吃飯']],
+ where:'通常在教會；主日 11 點的教會報告由他上台；中午常常一起吃飯；星期三晚上小組。',
+ likes:{lunch:5,coffee:4,drink:3,bread:3,cake:2},hint:'他最喜歡大家一起吃飯，請他吃便當最有效。',
+ lines:[['老哥！今天的陀螺，我已經完成戰術部署了！','目標鎖定……老哥的陀螺！發射！','詠晨說我打陀螺的時候，比報告還認真。'],
+  ['這不是普通的陀螺……這是經過精密計算的戰術兵器！','士官的意志，就算陀螺停下也不會倒下！','老哥，戰場上沒有僥倖，只有實力！'],
+  ['我的陀螺，承載著全教會的期待！','老哥……你逼我拿出最終兵器了。','轉速全開！這一擊，獻給詠晨！！上吧！愛的晨強！羈絆之力！']],
+ acts:[{k:'meal',t:'🍜 跟他和詠晨一起吃飯',d:'💰150・1 小時・好感+7',m:150,h:1,fx:{j:8},pt:7,hr:[11,20],msg:'登強一頓飯笑話講不停，詠晨在旁邊一直笑。'},
+  {k:'army',t:'🎖️ 聊聊軍中生活',d:'免費・0.5 小時・😊+5・好感+5',m:0,h:.5,fx:{j:5},pt:5,msg:'你們聊起部隊的大小事，笑到停不下來。'},
+  {k:'bey',t:'🌀 跟他對戰戰鬥陀螺',d:'免費・好感+5',m:0,h:.3,pt:5,custom:'bey',msg:'登強：「上吧！愛的晨強！羈絆之力！」'}]};
+
+// 教會出現時間
+{const _cc=churchCast;churchCast=function(rm){const r=_cc.apply(this,arguments);try{const h=T.hour,m=CHM(),d=dow();if(h<7.5||h>=21)return r;
+ const A=(n,fr,x,y,L,o)=>rm.ppl.push(pp(n,x,y,'#555','#222',L,{dyn:1,still:1,fr,...o}));
+ const DB=(x,y,o)=>A('大B哥','bigb',x,y,'老哥！|來一場陀螺嗎？',o),HG=(x,y,o)=>A('轟哥','hong',x,y,'（喀滋喀滋）|老哥要吃嗎？',o),DQ=(x,y,o)=>A('張登強','dengqiang',x,y,'老哥平安！|陀螺帶了嗎？',o);
+ if(m=='sun'){DB(92,56,{dir:0,pose:'guitar',bub:['🎸 ♪～','（solo 中）']});HG(118,60,{dir:0,pose:'guitar',bub:['🎵 咚～咚咚','（穩穩守拍子）']});DQ(232,60,{dir:0,bub:h>=11&&h<11.5?['接下來是教會報告～','這週六下午練團喔！']:['（等報告中）']})}
+ else if(m=='sat'){DB(92,56,{dir:0,pose:'guitar',bub:['再一次！從副歌！']});HG(118,60,{dir:0,pose:'guitar',bub:['（咚咚咚）']})}
+ else if(d==6&&h>=12.5&&h<16){HG(470,330,{dir:2,bub:['🍪 兩包餅乾','🍦 再一支冰棒']});DQ(440,330,{dir:2,bub:['一起吃飯吧！']});DB(500,316,{dir:2})}
+ else if(m=='wed'){DQ(440,300,{dir:0});DB(468,300,{dir:0})}
+ else if(m=='idle'&&h>=10&&h<18&&(dKey()%2==0))DB(330,300,{dir:2,bub:['老哥！','來一場陀螺嗎？']});
+}catch(e){console.warn(e)}return r}}
+
+/* v13.58 詠晨（登強的老婆）、郭曄（敬拜團副領・國小代理老師） */
+Object.assign(NSPR,{'詠晨':'yc','郭曄':'gy'});NPCN2.push('yc','gy');npc2All();setTimeout(npc2All,1500);
+FR.yongchen={n:'詠晨',ic:'🧢',who:'登強的老婆・教會的好姊妹',
+ intro:'「老哥～哈哈哈！我是詠晨，登強的老婆！」<br><i>（她笑聲超開朗，一開口整個空間都亮起來。）</i>',
+ bio:[[0,'張登強的老婆，兩個人感情很好'],[0,'個性樂觀，笑聲很開朗'],[1,'常常叮嚀登強，顧前顧後的好老婆'],[1,'很愛主，跟教會的姊妹們都是好姊妹']],
+ where:'通常跟登強一起在教會；中午常常一起吃飯。',
+ likes:{cake:4,drink:4,coffee:3,bread:3,lunch:3},hint:'甜點和手搖飲都很受歡迎。',
+ lines:[['哈哈哈哈！老哥你好好笑！','登強！你外套有沒有帶？等一下會冷！','老哥，家宜今天有來嗎？'],
+  ['登強每次打陀螺都好認真，我在旁邊看都快笑死了哈哈哈。','登強，水壺！不要又忘在教會！','姊妹們今天要一起吃什麼呀～'],
+  ['「愛的晨強」？哈哈哈哈，是他自己取的啦！','老哥，你跟家宜要好好照顧身體喔！','有你們在，教會好熱鬧！']],
+ acts:[{k:'meal',t:'🍜 跟她和登強一起吃飯',d:'💰150・1 小時・好感+7',m:150,h:1,fx:{j:8},pt:7,hr:[11,20],others:{dengqiang:3},msg:'詠晨一邊笑一邊幫登強夾菜：「多吃一點！」'},
+  {k:'chat',t:'💬 跟她聊聊天',d:'0.5 小時・😊+6・好感+4',m:0,h:.5,fx:{j:6},pt:4,msg:'她的笑聲很有感染力，你也跟著一直笑。'},
+  {k:'drink',t:'🥤 請她喝飲料',d:'💰60・好感+4',m:60,h:.3,fx:{j:3},pt:4,msg:'「謝謝老哥～哈哈哈！」'}]};
+FR.guoye={n:'郭曄',ic:'🎤',who:'敬拜團副領・國小代理老師',
+ intro:'「嗨老哥！我是郭曄，在敬拜團當副領～」<br><i>（她笑得很燦爛，講話很幽默，一下子就跟你熟起來了。）</i>',
+ bio:[[0,'以倫哥帶出來的年輕人，很愛主'],[0,'在敬拜團擔任副領'],[0,'國小代理老師，常常工作跟教會兩頭跑，很辛苦'],
+  [1,'家住新竹'],[1,'目前單身！'],[2,'個性幽默、喜歡交朋友，很貼心溫暖']],
+ where:'主日在敬拜團擔任副領；星期六下午練團。',
+ likes:{coffee:5,cake:4,drink:4,bread:3,book:2},hint:'代理老師很累，請她喝咖啡最貼心。',
+ lines:[['老哥平安～今天也是元氣滿滿！','剛改完一疊作業，直接衝來教會！','以倫哥說今天的歌要再熱一點！'],
+  ['工作跟教會兩頭跑，累是累，但很開心啦！','小朋友今天問我「老師你有男朋友嗎」……我說下一題。','新竹的風很大，高雄的太陽很大，我都很習慣了哈哈。'],
+  ['老哥，有沒有好的弟兄可以介紹一下？（認真）','謝謝你常常來教會，看到大家我就有力氣了。','下次聚會帶家宜一起來唱歌嘛！']],
+ acts:[{k:'coffee',t:'☕ 請她喝咖啡',d:'💰80・0.5 小時・好感+6',m:80,h:.5,fx:{j:4},pt:6,msg:'郭曄：「老哥救了我！今天改作業改到眼睛快閉起來了。」'},
+  {k:'sing',t:'🎤 跟她一起練唱詩歌',d:'免費・1 小時・好感+5・歌唱+3',m:0,h:1,fx:{j:6},pt:5,sing:3,msg:'她幫你抓拍子：「老哥，副歌這裡再大聲一點！」'},
+  {k:'chat',t:'💬 聽她講學校的趣事',d:'0.5 小時・😊+6・好感+4',m:0,h:.5,fx:{j:6},pt:4,msg:'她講起班上小朋友的童言童語，你們笑成一團。'}]};
+{const _cc=churchCast;churchCast=function(rm){const r=_cc.apply(this,arguments);try{const h=T.hour,m=CHM(),d=dow();if(h<7.5||h>=21)return r;
+ const A=(n,fr,x,y,L,o)=>rm.ppl.push(pp(n,x,y,'#555','#222',L,{dyn:1,still:1,fr,...o}));
+ const YC=(x,y,o)=>A('詠晨','yongchen',x,y,'哈哈哈～老哥！|登強！外套！',o),GY=(x,y,o)=>A('郭曄','guoye',x,y,'老哥平安～|今天也要大聲唱！',o);
+ if(m=='sun'){GY(206,54,{dir:0,pose:'sing',bub:['🎤 ♪～','大家一起唱！']});YC(256,64,{dir:0,bub:['哈哈哈！','（幫登強拿水壺）']})}
+ else if(m=='sat')GY(206,54,{dir:0,pose:'sing',bub:['副歌再來一次！']});
+ else if(d==6&&h>=12.5&&h<16)YC(412,330,{dir:2,bub:['多吃一點！','哈哈哈～']});
+ else if(m=='wed')YC(412,300,{dir:0});
+}catch(e){console.warn(e)}return r}}
 
 /* ===== v9：夜間燈光、輸入、主迴圈 ===== */
 function drawTree(c,t){if(window.uaTree&&uaTree(c,t))return;const w=wx(),sw=Math.sin(NOW/(w==3?260:1400)+t.x*.05)*(w==3?.16:.02)+(w==3?Math.sin(NOW/900)*.06:0);c.save();c.translate(t.x+14,t.y+37);c.transform(1,0,sw,1,0,0);c.scale(t.sc||1,t.sc||1);c.drawImage(treeSprite(t.k,t.v),-24,-60,48,66);c.restore()}
