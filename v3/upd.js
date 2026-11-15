@@ -1,3 +1,8 @@
+/* yl-reset：網址加 ?reset 會清掉 App 的快取重新下載 */
+(function(){if(!/[?&]reset/.test(location.search))return;try{document.write('<p style="font:16px sans-serif;color:#fff;padding:20px">🔄 正在清除舊版本，請稍候……</p>')}catch(e){}
+ var p=[];try{if(navigator.serviceWorker)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister()}))}))}catch(e){}
+ try{if(window.caches)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k)}))}))}catch(e){}
+ Promise.all(p).catch(function(){}).then(function(){location.replace(location.pathname)});throw 0})();
 /* App 版：檢查新版本、詢問是否更新、更新後說明新增內容 */
 (function(){var CUR=window.APPV,LOG=window.APPLOG||[];
  function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){}}
