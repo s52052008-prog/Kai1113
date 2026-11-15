@@ -1,6 +1,6 @@
 
 const cv=document.getElementById('c'),g=cv.getContext('2d');
-const W=window.__GW||480,H=300,WW=2784,WH=1300,NY=480;const OWW=2400,XCUTS=[[650,144],[1200,48],[1806,48]],SX=x=>{let d=0;for(const c of XCUTS)if(x>=c[0])d+=c[1];return x+d};const LOWQ=(navigator.deviceMemory&&navigator.deviceMemory<4)||(('ontouchstart' in window||navigator.maxTouchPoints>0)&&Math.min(screen.width,screen.height)<700);let K=LOWQ?4:6;const SK=K;const KS=Math.min(K/2,Math.sqrt(((('ontouchstart' in window)||navigator.maxTouchPoints>0)?10e6:15.5e6)/(WW*(WH+NY))));/* iOS 單張畫布上限 16,777,216 像素；手機再降低以省記憶體 */cv.width=W*K;cv.height=H*K;
+const W=window.__GW||480,H=300,WW=2784,WH=1300,NY=480;const OWW=2400,XCUTS=[[650,144],[1200,48],[1806,48]],SX=x=>{let d=0;for(const c of XCUTS)if(x>=c[0])d+=c[1];return x+d};const LOWQ=(navigator.deviceMemory&&navigator.deviceMemory<4)||(('ontouchstart' in window||navigator.maxTouchPoints>0)&&Math.min(screen.width,screen.height)<700);let K=LOWQ?4:6;const SK=K;const KS=Math.min(K/2,Math.sqrt(((('ontouchstart' in window)||navigator.maxTouchPoints>0)?7e6:15.5e6)/(WW*(WH+NY))));/* iOS 單張畫布上限 16,777,216 像素；手機再降低以省記憶體 */cv.width=W*K;cv.height=H*K;
 const R=(c,x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(Math.round(x*KS)/KS,Math.round(y*KS)/KS,w,h)};
 const hit=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -17560,7 +17560,7 @@ GF.push('w1','w2','w3','w5','w6','f1','f2','f4','f5','f6','f7');
 Object.assign(NSPR,{'王伯':'m4','茶行老闆娘':'f2','食堂阿桑':'a2','房東太太':'f5'});
 NROLE.splice(NROLE.findIndex(q=>q[2]=='M'),0,[null,/^會友$|^信眾$/,['a1','a3','f1','f2','f4','f5','f6','m1','m2','m3','m4','w4']],[null,/阿姨$|媽媽$|大嬸$/,['f1','f2','f3','a4']],[null,/妹妹$|小女孩$/,['k1','k2','k3','k4']]);
 NROLE.forEach(q=>{const t=String(q[1]);if(q[0]=='健身房'&&/健身客/.test(t))q[2]=q[2].concat(['w1','w3','w5']);else if(/阿嬤/.test(t))q[2]=['w4','a1','a2','a3','a5'];else if(/阿公/.test(t))q[2]=['m1','m2','m3','m4'];else if(/小朋友/.test(t))q[2]=['g01','k1','k3','k4','k2'];else if(/同學/.test(t))q[2]=q[2].concat(['f7','f6','k2']);else if(/張阿姨|清潔/.test(t))q[2]='f3';else if(q[0]=='遊藝場'&&/少女/.test(t))q[2]=['g26','w6']});
-function npc2Sheet(code){const wk=code+'_walk4';if(!uaOK(wk))return;const im=UAI[wk],FW=64,FH=128,cv=document.createElement('canvas');cv.width=FW*6;cv.height=FH*10;const x=cv.getContext('2d');x.imageSmoothingEnabled=false;
+function npc2Sheet(code){const wk=code+'_walk4';if(!uaOK(wk))return undefined;const im=UAI[wk],FW=64,FH=128,cv=document.createElement('canvas');cv.width=FW*6;cv.height=FH*10;const x=cv.getContext('2d');x.imageSmoothingEnabled=false;
  const cell=(r,c,dc,dr)=>x.drawImage(im,c*FW,r*FH,FW,FH,dc*FW,dr*FH,FW,FH);
  for(let r=0;r<4;r++){[0,1,2,3,0,1].forEach((c,i)=>cell(r,c,i,r));for(let i=0;i<6;i++)cell(r,1,i,r+4)}
  for(let i=0;i<6;i++)cell(0,1,i,9);
@@ -17568,8 +17568,27 @@ function npc2Sheet(code){const wk=code+'_walk4';if(!uaOK(wk))return;const im=UAI
  const sit=(r,dc)=>{const t=document.createElement('canvas');t.width=FW;t.height=FH;const q=t.getContext('2d',{willReadFrequently:true});q.drawImage(im,1*FW,r*FH,FW,FH,0,0,FW,FH);const d=q.getImageData(0,0,FW,FH).data;let top=FH,bt=0;for(let y=0;y<FH;y++)for(let xx=0;xx<FW;xx++)if(d[(y*FW+xx)*4+3]>0){top=Math.min(top,y);bt=Math.max(bt,y)}
   const hip=Math.round(top+(bt-top)*.62),dd=Math.round((bt-hip)*.45);x.drawImage(t,0,0,FW,hip,dc*FW,8*FH+dd,FW,hip);x.drawImage(t,0,hip,FW,bt+1-hip,dc*FW,8*FH+hip+dd,FW,Math.max(1,bt+1-hip-dd))};
  sit(0,0);sit(3,1);
- cv.complete=true;cv.naturalWidth=cv.width;cv.naturalHeight=cv.height;UAI[code+'_sheet']=cv;NPOSE[code+'_sheet']={wave:[0],sing:[0],pray:[0],clap:[0],hug:[0],heart:[0],guitar:[0],lift:[0]}}
-function npc2All(){NPCN2.forEach(c=>{try{if(!UAI[c+'_sheet'])npc2Sheet(c)}catch(e){console.warn(e)}})}
+ cv.complete=true;cv.naturalWidth=cv.width;cv.naturalHeight=cv.height;return cv}
+// 省記憶體：不再為每個角色另做一張大 sheet 畫布（80 多張會超過 iPhone 的畫布記憶體上限），直接從走路圖畫
+const NPC2SET=new Set(),NPC2SIT={};
+function npc2All(){NPCN2.forEach(c=>{if(!uaOK(c+'_walk4'))return;NPC2SET.add(c);const k=c+'_sheet';if(UAI[k]!==UAI[c+'_walk4'])UAI[k]=UAI[c+'_walk4'];NPOSE[k]={wave:[0],sing:[0],pray:[0],clap:[0],hug:[0],heart:[0],guitar:[0],lift:[0]}})}
+function npc2SitInfo(c,r){const key=c+r;if(NPC2SIT[key])return NPC2SIT[key];const im=UAI[c+'_walk4'],FW=64,FH=128,t=document.createElement('canvas');t.width=FW;t.height=FH;const q=t.getContext('2d',{willReadFrequently:true});q.drawImage(im,FW,r*FH,FW,FH,0,0,FW,FH);
+ const d=q.getImageData(0,0,FW,FH).data;let top=FH,bt=0;for(let y=0;y<FH;y++)for(let x=0;x<FW;x++)if(d[(y*FW+x)*4+3]>0){if(y<top)top=y;if(y>bt)bt=y}t.width=t.height=0;
+ const hip=Math.round(top+(bt-top)*.62),dd=Math.round((bt-hip)*.45);return NPC2SIT[key]={hip,dd,bt}}
+{const _ad=alDraw;alDraw=function(c,o,key){const code=key&&key.endsWith('_sheet')?key.slice(0,-6):null;if(!code||!NPC2SET.has(code))return _ad.apply(this,arguments);
+ const im=UAI[code+'_walk4'];if(!uaOK(code+'_walk4'))return false;const dr=(o.dir|0)%8,dm=CHDIR[dr],ph=o.ph||0,ps=o.pose||'',sit=o.sit,FW=ALS.fw,FH=ALS.fh;
+ const s=ALS.H/105,dw=FW*s,dh=FH*s;let row,col=1,flip=false,sitR=-1;
+ if(ps&&ps!='preach'&&NPOSE[key]&&NPOSE[key][ps]&&!o.mv){row=0;col=1}
+ else if(sit){if(dm==0)sitR=3;else if(dm==2){sitR=3;flip=true}else sitR=0}
+ else if(o.mv){row=AL_WALK[dm];col=[0,1,2,3,0,1][((Math.floor(ph*10))%6+6)%6]}
+ else{row=AL_WALK[dm];col=1}
+ let by=0;if(ps=='lift')by=-Math.abs(Math.sin(ph*2))*1.5;
+ c.save();c.translate(Math.round(o.x+6),Math.round(o.y+8)+by);
+ c.fillStyle='rgba(40,25,0,.28)';c.beginPath();c.ellipse(0,0,sit?7:6.6,sit?2.2:2.4,0,0,7);c.fill();
+ c.imageSmoothingEnabled=false;if(flip)c.scale(-1,1);const X=-dw/2,Y=-ALS.foot*s;
+ if(sitR>=0){const S=npc2SitInfo(code,sitR),sy=sitR*FH;c.drawImage(im,FW,sy,FW,S.hip,X,Y+S.dd*s,dw,S.hip*s);const lh=S.bt+1-S.hip;c.drawImage(im,FW,sy+S.hip,FW,lh,X,Y+(S.hip+S.dd)*s,dw,Math.max(1,lh-S.dd)*s)}
+ else c.drawImage(im,col*FW,row*FH,FW,FH,X,Y,dw,dh);
+ c.restore();return true}}
 npc2All();setTimeout(npc2All,1500);setTimeout(npc2All,5000);
 
 // v13.52 第三批 20 位：u 大叔、y 年輕男生、b 小男孩、s 軍人、j 職業女性
