@@ -19,6 +19,11 @@ head='''<link rel="manifest" href="manifest.json"><meta name="theme-color" conte
 <style>html,body{background:#070614;overscroll-behavior:none;overflow:hidden;max-width:100vw}canvas{max-width:100vw}@media (display-mode:standalone){body{padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}}</style>
 '''
 LOG=json.load(open('/home/claude/v3/changelog.json',encoding='utf8'));head=head.replace('window.APPV=%s;window.APPLOG=%s;','window.APPV=%s;window.APPLOG=%s;'%(json.dumps(LOG[0]['v']),json.dumps(LOG,ensure_ascii=False)))
+h=h.replace('<script src="https://cdn.tailwindcss.com/3.4.17"></script>','<script async src="https://cdn.tailwindcss.com/3.4.17"></script>',1)
+diag='''<script>(function(){var t0=Date.now();function show(m){var e=document.getElementById('bootTip');if(e){e.innerHTML+='<br><span style="color:#ff9a9a;font-size:12px">'+m+'</span>'}}
+window.addEventListener('error',function(ev){show('⚠️ '+(ev.message||'載入錯誤')+(ev.filename?' ('+String(ev.filename).split('/').pop()+':'+ev.lineno+')':''))},true);
+setTimeout(function(){if(window.__GO)return;var e=document.getElementById('bootTip');if(!e)return;var b=document.createElement('div');b.innerHTML='<br><a href="?reset" style="display:inline-block;padding:10px 18px;border-radius:10px;background:#ff8fb1;color:#fff;text-decoration:none;font:bold 15px sans-serif">🔄 卡住了？按這裡重新下載</a>';e.appendChild(b)},25000)})();</script>'''
+head=diag+head
 h=h.replace('</head>',head+'</head>',1)
 json.dump({'v':LOG[0]['v'],'log':LOG},open(D+'/version.json','w',encoding='utf8'),ensure_ascii=False)
 # 3) 大檔案拆出去：首頁變很小，圖片和程式分開下載、各自快取（斷線重開不用從頭來）
@@ -64,3 +69,13 @@ self.addEventListener('fetch',e=>{const r=e.request;if(r.method!='GET'||r.url.in
 '''%(ver,json.dumps(files)))
 open(D+'/.nojekyll','w').write('')
 print('ok index',round(len(h)/1e6,2),'MB ua parts',len(parts))
+open(D+'/diag.html','w',encoding='utf8').write('''<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>診斷</title></head>
+<body style="font:15px sans-serif;background:#fff8e8;color:#4a2e14;padding:16px;line-height:1.6"><h3>🩺 宜樂無窮・連線診斷</h3><pre id="o" style="white-space:pre-wrap;font-size:13px;background:#fff;padding:10px;border-radius:8px"></pre>
+<p><button id="c" style="font:bold 15px sans-serif;padding:10px 16px">🧹 清除快取</button> <a href="./" style="font:bold 15px sans-serif">▶ 打開遊戲</a></p>
+<script>var o=document.getElementById('o');function L(s){o.textContent+=s+'\\n'}
+L('瀏覽器：'+navigator.userAgent);L('螢幕：'+screen.width+'x'+screen.height+' dpr '+devicePixelRatio);
+(async function(){try{var rs=navigator.serviceWorker?await navigator.serviceWorker.getRegistrations():[];L('Service Worker：'+rs.length+' 個')}catch(e){L('SW 錯誤 '+e)}
+try{var ks=window.caches?await caches.keys():[];L('快取：'+(ks.join(', ')||'無'))}catch(e){L('快取錯誤 '+e)}
+for(const u of ['index.html','version.json','game.js','ua/ua0.js','pk/pk_index.js','pk/npc_ua.js','pk/ua8x.js','https://cdn.tailwindcss.com/3.4.17']){var t=Date.now();try{var r=await fetch(u+(u.startsWith('http')?'':'?t='+t),{cache:'no-store'});var b=await r.blob();L(u+' → '+r.status+'　'+(b.size/1048576).toFixed(2)+'MB　'+(Date.now()-t)+'ms')}catch(e){L(u+' → 失敗 '+e)}}
+L('完成 ✅ 請截圖給冠宏')})();
+document.getElementById('c').onclick=async function(){try{for(const r of await navigator.serviceWorker.getRegistrations())await r.unregister();for(const k of await caches.keys())await caches.delete(k);L('已清除 ✅')}catch(e){L('清除錯誤 '+e)}};</script></body></html>''')

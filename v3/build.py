@@ -11,7 +11,7 @@ import re as _re
 head=_re.sub(r'<div id="pad".*?</div>\n(?=\s*\n?<script>|\s*<script>)',open('/home/claude/v3/pad.html',encoding='utf8').read(),head,flags=_re.S)
 head=head.replace('#pad button{touch-action:none}\n@media (hover:hover) and (pointer:fine){#pad{display:none!important}}',open('/home/claude/v3/pad.css',encoding='utf8').read()+open('/home/claude/v3/ui.css',encoding='utf8').read())
 import glob as _gl,os as _os
-_pl=''.join('<link rel="preload" as="script" href="pk/d%s.js">'%_os.path.basename(f)[1:-3] for f in sorted(_gl.glob('/home/claude/v3/pk/p*.webp')))
+_pl=''.join('<link rel="preload" as="script" href="pk/d%s.js">'%_os.path.basename(f)[1:-5] for f in sorted(_gl.glob("/home/claude/v3/pk/p*.webp")))
 head=head.replace('</head>','<script>'+open('/home/claude/v3/early.js',encoding='utf8').read()+'</script></head>',1)
 head=head.replace('</head>','<link rel="preload" as="script" href="pk/pk_index.js">'+_pl+'</head>',1)
 assert 'id="zl"' in head and '.knob' in head
