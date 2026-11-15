@@ -1,7 +1,7 @@
 /* v13.49 使用者新畫的 8 位角色：仰恩、笑笑、保羅、柏凱、以倫（新造型）、老八、張博洋、朱哲良
    素材只放 4 方向 × 4 格走路圖＋頭像；其餘（站、坐、動作列）在這裡自動組出來 */
 Object.assign(NSPR,{'仰恩':'ye','笑笑':'xx','保羅':'pl','廖柏凱':'bk','柏凱':'bk','黃以倫':'yl2','以倫牧師':'yl2','以倫':'yl2','老八':'l8','張博洋':'by','博洋':'by','朱哲良':'zl','哲良':'zl','小朱':'zl'});
-const NPCN2=['ye','xx','pl','bk','yl2','l8','by','zl','w1','w2','w3','w4','w5','w6','a1','a2','a3','a4','a5','f1','f2','f3','f4','f5','f6','f7','k1','k2','k3','k4','m1','m2','m3','m4'];
+const NPCN2=['ye','xx','pl','bk','yl2','l8','by','zl','w1','w2','w3','w4','w5','w6','a1','a2','a3','a4','a5','f1','f2','f3','f4','f5','f6','f7','k1','k2','k3','k4','m1','m2','m3','m4','u1','u2','u3','u4','u5','y1','y2','y3','y4','b1','b2','b3','s1','s2','s3','j1','j2','j3','j4','j5'];
 // v13.50 六位新路人女生：w1 金髮、w2 綠髮、w3 長馬尾、w4 老奶奶、w5 粉紅運動服、w6 耳罩少女
 GF.push('w1','w2','w3','w5','w6','f1','f2','f4','f5','f6','f7');
 // v13.51 第二批 20 位路人：a 阿嬤、m 阿公、f 女生/阿姨、k 小女孩
@@ -19,3 +19,14 @@ function npc2Sheet(code){const wk=code+'_walk4';if(!uaOK(wk))return;const im=UAI
  cv.complete=true;cv.naturalWidth=cv.width;cv.naturalHeight=cv.height;UAI[code+'_sheet']=cv;NPOSE[code+'_sheet']={wave:[0],sing:[0],pray:[0],clap:[0],hug:[0],heart:[0],guitar:[0],lift:[0]}}
 function npc2All(){NPCN2.forEach(c=>{try{if(!UAI[c+'_sheet'])npc2Sheet(c)}catch(e){console.warn(e)}})}
 npc2All();setTimeout(npc2All,1500);setTimeout(npc2All,5000);
+
+// v13.52 第三批 20 位：u 大叔、y 年輕男生、b 小男孩、s 軍人、j 職業女性
+GM.push('u1','u2','u3','u4','u5','y1','y2','y3');GF.push('j2');
+Object.assign(NSPR,{'咖啡師':'j1','廚師':'j5','上班族':'u4','下班的上班族':'y3','營長':'s3','衛兵':'s1','阿兵哥':'s2','士兵':'s2'});
+NROLE.forEach(q=>{const t=String(q[1]);
+ if(/小朋友/.test(t))q[2]=q[2].concat(['b1','b2']);
+ else if(/同學/.test(t))q[2]=q[2].concat(['y4','b3']);
+ else if(/黑手學徒/.test(t))q[2]=['g19','j3'];
+ else if(/站務員/.test(t))q[2]=['g27','j4'];
+ else if(/領位員\|燒肉職人/.test(t))q[2]=['g16','j5'];});
+NROLE.splice(NROLE.findIndex(q=>q[2]=='M'),0,[null,/^旅客$/,GM.concat(GF,['s2','s2','s3','s1'])],[null,/^少年$/,['y1','y2','y3','y4','b3','g11','g24']],[null,/叔叔$|大叔$|伯伯$/,['u1','u2','u3','u4','u5']]);
