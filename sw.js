@@ -1,6 +1,3 @@
-const C='yl-1794758825',PRE=["./", "index.html", "manifest.json", "icon-192.png", "icon-512.png", "icon-180.png"];
-self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(C).then(c=>Promise.all(PRE.map(u=>c.add(u).catch(()=>{})))))});
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!=C).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('fetch',e=>{const r=e.request;if(r.method!='GET'||r.url.includes('version.json'))return;
- if(r.mode=='navigate'){e.respondWith(fetch(r).then(res=>{if(res.ok&&!res.redirected){const cp=res.clone();caches.open(C).then(c=>c.put('index.html',cp))}return res}).catch(()=>caches.match('index.html').then(m=>m?new Response(m.body,{headers:m.headers}):Response.error())));return}
- e.respondWith(caches.match(r).then(m=>m||fetch(r).then(res=>{if(res.ok||res.type=='opaque'){const cp=res.clone();caches.open(C).then(c=>c.put(r,cp))}return res})))});
+// 停用離線快取：清掉所有舊快取並自行解除註冊（舊版快取會讓 iPhone 白畫面）
+self.addEventListener('install',e=>self.skipWaiting());
+self.addEventListener('activate',e=>e.waitUntil((async()=>{for(const k of await caches.keys())await caches.delete(k);await self.registration.unregister();for(const c of await self.clients.matchAll({type:'window'}))c.navigate(c.url)})()));

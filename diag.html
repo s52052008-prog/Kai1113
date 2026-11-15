@@ -1,7 +1,7 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>診斷</title></head>
 <body style="font:15px sans-serif;background:#fff8e8;color:#4a2e14;padding:16px;line-height:1.6"><h3>🩺 宜樂無窮・連線診斷</h3><pre id="o" style="white-space:pre-wrap;font-size:13px;background:#fff;padding:10px;border-radius:8px"></pre>
 <p><button id="c" style="font:bold 15px sans-serif;padding:10px 16px">🧹 清除快取</button> <a href="./" style="font:bold 15px sans-serif">▶ 打開遊戲</a></p>
-<script>var o=document.getElementById('o');function L(s){o.textContent+=s+'\n'}
+<script>(async function(){try{for(const r of await navigator.serviceWorker.getRegistrations()){r.update().catch(()=>{});await r.unregister()}for(const k of await caches.keys())await caches.delete(k)}catch(e){}})();var o=document.getElementById('o');function L(s){o.textContent+=s+'\n'}
 L('瀏覽器：'+navigator.userAgent);L('螢幕：'+screen.width+'x'+screen.height+' dpr '+devicePixelRatio);
 (async function(){try{var rs=navigator.serviceWorker?await navigator.serviceWorker.getRegistrations():[];L('Service Worker：'+rs.length+' 個')}catch(e){L('SW 錯誤 '+e)}
 try{var ks=window.caches?await caches.keys():[];L('快取：'+(ks.join(', ')||'無'))}catch(e){L('快取錯誤 '+e)}
