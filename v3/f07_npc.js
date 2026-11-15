@@ -104,7 +104,7 @@ function updateWorld(dt){
   if(!n.r)return;n.tm-=dt;
   if(n.tm<=0){n.tm=1+Math.random()*2.5;n.vx=n.vy=0;if(Math.random()>.3){const v=n.mode=='v'||(n.mode=='a'&&Math.random()<.5),d=Math.random()<.5?-1:1;if(v)n.vy=d*n.sp;else n.vx=d*n.sp}n.peck=Math.random()<.3}
   const ox=n.x,oy=n.y;n.x+=n.vx*dt;n.y+=n.vy*dt;
-  if(nBlocked(n)){n.x=ox;n.y=oy;n.vx*=-1;n.vy*=-1;n.tm=Math.min(n.tm,.5)}
+  if(nBlocked(n)){n.x=ox;n.y=oy;n.vx=n.vy=0;n.tm=.6+Math.random()*1.4}
   n.mv=!!(n.vx||n.vy);if(n.vx)n.dir=n.vx<0?2:3;else if(n.vy)n.dir=n.vy<0?1:0;if(n.mv){n.at=(n.at||0)+dt;if(n.at>.2){n.at=0;n.fr=typeof n.fr=='string'?n.fr:n.fr^1}}});
  trafficStep(dt);
  if(st.comp){if(!PET.on){PET.on=1;PET.x=p.x;PET.y=p.y}
