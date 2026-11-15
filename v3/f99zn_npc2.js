@@ -75,3 +75,6 @@ NROLE.forEach(q=>{const t=String(q[1]);
  if(q[0]=='診所'&&/醫生/.test(t))q[2]=['q5','r1'];
  else if(/警員/.test(t))q[2]=['r2','q3','g03'];});
 NROLE.splice(NROLE.findIndex(q=>q[2]=='M'),0,[null,/廚師|主廚/,['r3','j5']]);
+// v13.60 暫時拿掉坐姿：目前的坐姿圖是盤腿，坐在椅子上很怪 → 一律用站立圖（等坐椅子的圖做好再補）
+const SIT_OFF=true;
+{const _ad2=alDraw;alDraw=function(c,o,key){if(SIT_OFF&&o&&o.sit){const o2=Object.assign({},o,{sit:0,mv:0});return _ad2.call(this,c,o2,key)}return _ad2.apply(this,arguments)}}
