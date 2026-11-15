@@ -83,7 +83,7 @@ toast('走到建築南側門口會詢問是否進入　M：小鎮地圖　空白
 out=head+'\n'+'\n'.join(parts)+'\n'+tail
 _i=out.rindex('<script>',0,out.index('const W=window.__GW'))
 out=out[:_i]+'<script id="GAMEJS" type="text/x-game">'+out[_i+8:]
-_ld='<script src="pk/pk_index.js"></script><script src="pk/npc_ua.js"></script><script>'+rd('ua_data.js')+rd('ua_data2.js')+rd('ua_data3.js')+rd('ua_data4.js')+rd('ua_data5.js')+rd('ua_data6.js')+rd('ua_data7.js')+rd('ua_data8.js')+rd('ua_data9.js')+rd('ua_data10.js')+rd('ua_data11.js')+rd('ua_data12.js')+'''
+_ld='<script src="pk/pk_index.js"></script><script src="pk/ua8x.js"></script><script src="pk/npc_ua.js"></script><script>'+rd('ua_data.js')+rd('ua_data2.js')+rd('ua_data3.js')+rd('ua_data4.js')+rd('ua_data5.js')+rd('ua_data6.js')+rd('ua_data7.js')+rd('ua_data9.js')+rd('ua_data10.js')+rd('ua_data11.js')+rd('ua_data12.js')+'''
 if(window.UA_EXTRA)Object.assign(UA,UA_EXTRA);
 window.UAI={};(function(){const go=()=>{if(window.__GO)return;window.__GO=1;const s=document.createElement('script');s.textContent=document.getElementById('GAMEJS').textContent;document.body.appendChild(s)};
 const ps=Object.keys(UA).map(k=>{const im=new Image();im.src=UA[k];UAI[k]=im;return (im.decode?im.decode():new Promise(r=>{im.onload=r})).catch(()=>{})});

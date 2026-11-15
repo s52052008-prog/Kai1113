@@ -50,7 +50,7 @@ pre=''.join('<link rel="preload" as="script" href="ua/ua%d.js">'%i for i in rang
 h=h.replace('</head>',pre+'</head>',1)
 open(D+'/index.html','w',encoding='utf8').write(h)
 UAF=['ua/ua%d.js'%i for i in range(len(parts))]
-for f in glob.glob('/home/claude/v3/pk/d*.js')+['/home/claude/v3/pk/pk_index.js','/home/claude/v3/pk/npc_ua.js']:shutil.copy(f,D+'/pk/')
+for f in glob.glob('/home/claude/v3/pk/d*.js')+['/home/claude/v3/pk/pk_index.js','/home/claude/v3/pk/npc_ua.js','/home/claude/v3/pk/ua8x.js']:shutil.copy(f,D+'/pk/')
 files=['./','index.html','manifest.json','icon-192.png','icon-512.png','icon-180.png']
 ver=str(int(os.path.getmtime('/home/claude/v3/out.html')))
 json.dump({"name":"家有冠宏，宜樂無窮","short_name":"宜樂無窮","start_url":"./","scope":"./","display":"fullscreen","orientation":"landscape","background_color":"#070614","theme_color":"#140c24",
