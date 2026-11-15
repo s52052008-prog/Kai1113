@@ -1,5 +1,5 @@
 const cv=document.getElementById('c'),g=cv.getContext('2d');
-const W=window.__GW||480,H=300,WW=2784,WH=1300,NY=480;const OWW=2400,XCUTS=[[650,144],[1200,48],[1806,48]],SX=x=>{let d=0;for(const c of XCUTS)if(x>=c[0])d+=c[1];return x+d};const LOWQ=(navigator.deviceMemory&&navigator.deviceMemory<4)||(('ontouchstart' in window||navigator.maxTouchPoints>0)&&Math.min(screen.width,screen.height)<700);let K=LOWQ?4:6;const SK=K;const KS=Math.min(K/2,Math.sqrt(((('ontouchstart' in window)||navigator.maxTouchPoints>0)?10e6:15.5e6)/(WW*(WH+NY))));/* iOS 單張畫布上限 16,777,216 像素；手機再降低以省記憶體 */cv.width=W*K;cv.height=H*K;
+const W=window.__GW||480,H=300,WW=2784,WH=1300,NY=480;const OWW=2400,XCUTS=[[650,144],[1200,48],[1806,48]],SX=x=>{let d=0;for(const c of XCUTS)if(x>=c[0])d+=c[1];return x+d};const LOWQ=(navigator.deviceMemory&&navigator.deviceMemory<4)||(('ontouchstart' in window||navigator.maxTouchPoints>0)&&Math.min(screen.width,screen.height)<700);let K=LOWQ?4:6;const SK=K;const KS=Math.min(K/2,Math.sqrt(((('ontouchstart' in window)||navigator.maxTouchPoints>0)?7e6:15.5e6)/(WW*(WH+NY))));/* iOS 單張畫布上限 16,777,216 像素；手機再降低以省記憶體 */cv.width=W*K;cv.height=H*K;
 const R=(c,x,y,w,h,col)=>{c.fillStyle=col;c.fillRect(Math.round(x*KS)/KS,Math.round(y*KS)/KS,w,h)};
 const hit=(a,b)=>a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
