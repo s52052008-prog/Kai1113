@@ -1969,7 +1969,7 @@ function updateWorld(dt){
   if(!n.r)return;n.tm-=dt;
   if(n.tm<=0){n.tm=1+Math.random()*2.5;n.vx=n.vy=0;if(Math.random()>.3){const v=n.mode=='v'||(n.mode=='a'&&Math.random()<.5),d=Math.random()<.5?-1:1;if(v)n.vy=d*n.sp;else n.vx=d*n.sp}n.peck=Math.random()<.3}
   const ox=n.x,oy=n.y;n.x+=n.vx*dt;n.y+=n.vy*dt;
-  if(nBlocked(n)){n.x=ox;n.y=oy;n.vx*=-1;n.vy*=-1;n.tm=Math.min(n.tm,.5)}
+  if(nBlocked(n)){n.x=ox;n.y=oy;n.vx=n.vy=0;n.tm=.6+Math.random()*1.4}
   n.mv=!!(n.vx||n.vy);if(n.vx)n.dir=n.vx<0?2:3;else if(n.vy)n.dir=n.vy<0?1:0;if(n.mv){n.at=(n.at||0)+dt;if(n.at>.2){n.at=0;n.fr=typeof n.fr=='string'?n.fr:n.fr^1}}});
  trafficStep(dt);
  if(st.comp){if(!PET.on){PET.on=1;PET.x=p.x;PET.y=p.y}
@@ -17718,6 +17718,20 @@ FR.guoye={n:'郭曄',ic:'🎤',who:'敬拜團副領・國小代理老師',
  else if(d==6&&h>=12.5&&h<16)YC(412,330,{dir:2,bub:['多吃一點！','哈哈哈～']});
  else if(m=='wed')YC(412,300,{dir:0});
 }catch(e){console.warn(e)}return r}}
+
+/* v13.61 卡住修正
+   1) 戶外：出門後如果站在障礙物裡，往附近空地推出去
+   2) 畫面上已經沒有任何全螢幕視窗，卻還被「鎖住不能動」→ 2 秒後自動解鎖
+   3) 走路的 NPC 停下來時一律雙腳站好 */
+function unstuckOut(){if(scene||(typeof ED!='undefined'&&ED.on))return;if(!staticBlk())return;const ox=p.x,oy=p.y;
+ for(let r=4;r<=120;r+=4)for(let a=0;a<16;a++){const t=a/16*6.2832;p.x=ox+Math.cos(t)*r;p.y=oy+Math.sin(t)*r;if(!staticBlk())return}p.x=ox;p.y=oy}
+{const _x=exitTown;exitTown=function(){const r=_x.apply(this,arguments);try{unstuckOut()}catch(e){}return r}}
+let __lockT=0;
+setInterval(()=>{try{if(!window.TITLE||MG){__lockT=0;return}
+ const ov=[...document.body.children].some(e=>{const cs=getComputedStyle(e);return cs.position=='fixed'&&+cs.zIndex>=9000&&e.offsetWidth>200&&cs.display!='none'&&cs.visibility!='hidden'&&+cs.opacity>0.05&&e.id!='bootLoad'});
+ if(ov){__lockT=0;return}if(++__lockT>=4){window.TITLE=false;window.OVL=0;__lockT=0;Object.keys(keys).forEach(k=>keys[k]=0)}}catch(e){}},500);
+// 被擋住時原地站好，不再左右來回閃
+{const _uw=updateWorld;updateWorld=function(dt){_uw.apply(this,arguments);try{NP.forEach(n=>{if(n.walk||n.still||n.b=='loop')return;if(!n.vx&&!n.vy)n.mv=false})}catch(e){}}}
 
 /* ===== v9：夜間燈光、輸入、主迴圈 ===== */
 function drawTree(c,t){if(window.uaTree&&uaTree(c,t))return;const w=wx(),sw=Math.sin(NOW/(w==3?260:1400)+t.x*.05)*(w==3?.16:.02)+(w==3?Math.sin(NOW/900)*.06:0);c.save();c.translate(t.x+14,t.y+37);c.transform(1,0,sw,1,0,0);c.scale(t.sc||1,t.sc||1);c.drawImage(treeSprite(t.k,t.v),-24,-60,48,66);c.restore()}
