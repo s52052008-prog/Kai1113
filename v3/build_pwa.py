@@ -79,3 +79,10 @@ try{var ks=window.caches?await caches.keys():[];L('快取：'+(ks.join(', ')||'�
 for(const u of ['index.html','version.json','game.js','ua/ua0.js','pk/pk_index.js','pk/npc_ua.js','pk/ua8x.js','https://cdn.tailwindcss.com/3.4.17']){var t=Date.now();try{var r=await fetch(u+(u.startsWith('http')?'':'?t='+t),{cache:'no-store'});var b=await r.blob();L(u+' → '+r.status+'　'+(b.size/1048576).toFixed(2)+'MB　'+(Date.now()-t)+'ms')}catch(e){L(u+' → 失敗 '+e)}}
 L('完成 ✅ 請截圖給冠宏')})();
 document.getElementById('c').onclick=async function(){try{for(const r of await navigator.serviceWorker.getRegistrations())await r.unregister();for(const k of await caches.keys())await caches.delete(k);L('已清除 ✅')}catch(e){L('清除錯誤 '+e)}};</script></body></html>''')
+
+# v1.2.1：停用 Service Worker（舊快取會讓 iPhone 白畫面）——直接用已部署版本的 sw.js 與註銷腳本
+open(D+'/sw.js','w').write(open('/home/claude/v3/sw_killswitch.js').read())
+_i=open(D+'/index.html',encoding='utf8').read()
+_old="<script>if('serviceWorker' in navigator)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script>"
+_new=open('/home/claude/v3/sw_off.js',encoding='utf8').read()
+open(D+'/index.html','w',encoding='utf8').write(_i.replace(_old,'<script>'+_new+'</script>'))

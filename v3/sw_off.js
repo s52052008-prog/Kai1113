@@ -1,0 +1,2 @@
+(function(){try{var ctl=navigator.serviceWorker&&navigator.serviceWorker.controller;var p=[];if(navigator.serviceWorker)p.push(navigator.serviceWorker.getRegistrations().then(function(rs){rs.forEach(function(r){r.update().catch(function(){});r.unregister()})}));if(window.caches)p.push(caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k)}))}));
+ Promise.all(p).catch(function(){}).then(function(){if(ctl&&!sessionStorage.getItem('yl-sw-off')){sessionStorage.setItem('yl-sw-off','1');location.reload()}})}catch(e){}})();
