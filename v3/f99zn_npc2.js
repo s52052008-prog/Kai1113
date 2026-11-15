@@ -1,7 +1,7 @@
 /* v13.49 使用者新畫的 8 位角色：仰恩、笑笑、保羅、柏凱、以倫（新造型）、老八、張博洋、朱哲良
    素材只放 4 方向 × 4 格走路圖＋頭像；其餘（站、坐、動作列）在這裡自動組出來 */
 Object.assign(NSPR,{'仰恩':'ye','笑笑':'xx','保羅':'pl','廖柏凱':'bk','柏凱':'bk','黃以倫':'yl2','以倫牧師':'yl2','以倫':'yl2','老八':'l8','張博洋':'by','博洋':'by','朱哲良':'zl','哲良':'zl','小朱':'zl'});
-const NPCN2=['ye','xx','pl','bk','yl2','l8','by','zl','w1','w2','w3','w4','w5','w6','a1','a2','a3','a4','a5','f1','f2','f3','f4','f5','f6','f7','k1','k2','k3','k4','m1','m2','m3','m4','u1','u2','u3','u4','u5','y1','y2','y3','y4','b1','b2','b3','s1','s2','s3','j1','j2','j3','j4','j5'];
+const NPCN2=['ye','xx','pl','bk','yl2','l8','by','zl','w1','w2','w3','w4','w5','w6','a1','a2','a3','a4','a5','f1','f2','f3','f4','f5','f6','f7','k1','k2','k3','k4','m1','m2','m3','m4','u1','u2','u3','u4','u5','y1','y2','y3','y4','b1','b2','b3','s1','s2','s3','j1','j2','j3','j4','j5','q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','q11','q12','q13','q14','q15','q16','q17','q18','q19','q20'];
 // v13.50 六位新路人女生：w1 金髮、w2 綠髮、w3 長馬尾、w4 老奶奶、w5 粉紅運動服、w6 耳罩少女
 GF.push('w1','w2','w3','w5','w6','f1','f2','f4','f5','f6','f7');
 // v13.51 第二批 20 位路人：a 阿嬤、m 阿公、f 女生/阿姨、k 小女孩
@@ -30,3 +30,22 @@ NROLE.forEach(q=>{const t=String(q[1]);
  else if(/站務員/.test(t))q[2]=['g27','j4'];
  else if(/領位員\|燒肉職人/.test(t))q[2]=['g16','j5'];});
 NROLE.splice(NROLE.findIndex(q=>q[2]=='M'),0,[null,/^旅客$/,GM.concat(GF,['s2','s2','s3','s1'])],[null,/^少年$/,['y1','y2','y3','y4','b3','g11','g24']],[null,/叔叔$|大叔$|伯伯$/,['u1','u2','u3','u4','u5']]);
+
+// v13.53 第四批 20 位：職業制服
+GM.push('q7','q11','q13','q15','q20');GF.push('q1','q2');
+Object.assign(NSPR,{'農夫伯':'q19','釣客 老林':'q12','釣客':'q12','老闆 阿財':'q18','教練 阿凱':'q6','郵差':'q20','外送員':'q15','保全':'q8','警衛':'q8','麵包師傅':'q13','園丁':'q11','水電工':'q7','機長':'q9','咖啡師':'q16'});GF.push('j1');GM.push('q10','q16');
+NROLE.forEach(q=>{if(q[0]=='碳佐麻里'&&/領位員/.test(String(q[1])))q[2]=['g16','j5','q10']});
+{const _r=nsRole;nsRole=function(nm,ob){if(ob&&ob._sp!==undefined)return ob._sp;const sc=typeof scene!='undefined'?scene:null;
+ if(sc=='餐廳'&&nm=='老闆'){if(ob)ob._sp='q10';return 'q10'}return _r.apply(this,arguments)}}
+NROLE.forEach(q=>{const t=String(q[1]);
+ if(q[0]=='診所'&&/醫生/.test(t))q[2]='q5';
+ else if(/警員/.test(t))q[2]=['g03','q3'];
+ else if(/消防員/.test(t))q[2]=['g04','q4'];
+ else if(q[0]=='健身房'&&/教練/.test(t))q[2]=['g10','q6'];
+ else if(q[0]=='書局'&&/店員/.test(t))q[2]=['g31','q2','q14'];
+ else if(q[0]=='銀行'&&/櫃員/.test(t))q[2]=['g17','q17'];
+ else if(q[0]=='銀行'&&/理專/.test(t))q[2]=['g18','q17'];
+ else if(/黑手學徒/.test(t))q[2]=q[2].concat(['q7']);
+ else if(/^\/\^旅客\$\//.test(t))q[2]=q[2].concat(['q9','q9']);
+ else if(/上班族/.test(t))q[2]=['u4','q17'];});
+NROLE.splice(NROLE.findIndex(q=>q[2]=='M'),0,[null,/釣客/,['q12']],[null,/郵差/,['q1','q20']],[null,/外送/,['q15']]);
